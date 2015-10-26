@@ -22,9 +22,23 @@ public class RentalServer {
 			ICarRentalCompany stub =(ICarRentalCompany) UnicastRemoteObject.exportObject(company, 0);
 			Registry registry = LocateRegistry.getRegistry();
 			registry.rebind(name, stub);
-			System.out.println("CarRentalCompany bound");
+			System.out.println("Hertz bound");
 		} catch (Exception e) {
-			System.err.println("CarRentalCompany exception:");
+			System.err.println("Hertz exception:");
+			e.printStackTrace();
+		}
+		
+		List<Car> cars2 = loadData("dockx.csv");
+
+		try {
+			CarRentalCompany company = new CarRentalCompany("Dockx", cars2);
+			String name = company.getName();
+			ICarRentalCompany stub =(ICarRentalCompany) UnicastRemoteObject.exportObject(company, 0);
+			Registry registry = LocateRegistry.getRegistry();
+			registry.rebind(name, stub);
+			System.out.println("Dockx bound");
+		} catch (Exception e) {
+			System.err.println("Dockx exception:");
 			e.printStackTrace();
 		}
 	}
