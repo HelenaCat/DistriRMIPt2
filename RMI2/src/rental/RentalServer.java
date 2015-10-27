@@ -10,32 +10,45 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import agency.IManagerSession;
+
+import client.Client;
+
 public class RentalServer {
 
 	public static void main(String[] args) throws ReservationException,
 	NumberFormatException, IOException {
-		List<Car> cars = loadData("hertz.csv");
+		//TODO Company-objecten aanmaken, 
+		//		en dan managersession aanmaken, stub meegeven en zo company registreren
+		
+		List<Car> carsHertz = loadData("hertz.csv");
 
 		try {
-			CarRentalCompany company = new CarRentalCompany("Hertz", cars);
+			CarRentalCompany company = new CarRentalCompany("Hertz", carsHertz);
 			String name = company.getName();
 			ICarRentalCompany stub =(ICarRentalCompany) UnicastRemoteObject.exportObject(company, 0);
-			Registry registry = LocateRegistry.getRegistry();
-			registry.rebind(name, stub);
+
+			Client client = new Client("trips");
+			IManagerSession session = client.getNewManagerSession("H", "Hertz");
+			session.register(stub);
+			
 			System.out.println("Hertz bound");
 		} catch (Exception e) {
 			System.err.println("Hertz exception:");
 			e.printStackTrace();
 		}
 		
-		List<Car> cars2 = loadData("dockx.csv");
+		List<Car> carsDockx = loadData("dockx.csv");
 
 		try {
-			CarRentalCompany company = new CarRentalCompany("Dockx", cars2);
+			CarRentalCompany company = new CarRentalCompany("Dockx", carsDockx);
 			String name = company.getName();
 			ICarRentalCompany stub =(ICarRentalCompany) UnicastRemoteObject.exportObject(company, 0);
-			Registry registry = LocateRegistry.getRegistry();
-			registry.rebind(name, stub);
+
+			
+			Client client = new Client("trips");
+			IManagerSession session = client.getNewManagerSession("F", "Dockx");
+			session.register(stub);
 			System.out.println("Dockx bound");
 		} catch (Exception e) {
 			System.err.println("Dockx exception:");

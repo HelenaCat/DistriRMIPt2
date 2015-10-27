@@ -6,9 +6,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+
 import client.ReservationConstraints;
 
 public interface ICarRentalCompany extends Remote{
+	
+	public String getName();
 
 	public boolean isAvailable(String carTypeName, Date start, Date end) throws RemoteException;
 	
