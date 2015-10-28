@@ -4,7 +4,7 @@ Stappenplan om te runnen:
 
 Zorg dat de 3 extra files (Dockx, Hertz en trips) ook in de src-folder staan!
 
-1. Compileren in de src-folder: javac -d /home/faes/git/DistriRMIPt2/RMI2/scr client/* rental/* agency/* 
+1. Compileren in de src-folder: javac -d /home/faes/git/DistriRMIPt2/RMI2/src client/* rental/* agency/* 
 Als je hier een fout krijgt, verwijder al uw .class-files.
 2. Doe in die terminal: rmic agency.ManagerSession (en misschien ook RentalSession, in case of 'StubNotFoundException').
 3. Start rmiregistry in de src-folder ("rmiregistry &")
