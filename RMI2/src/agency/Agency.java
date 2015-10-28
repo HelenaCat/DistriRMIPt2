@@ -19,8 +19,11 @@ public class Agency {
 		
 		try {
 			ISessionManager stub =(ISessionManager) UnicastRemoteObject.exportObject(sessionManager, 0);
+			System.out.println("SessionManager stub created"); //TODO
 			Registry registry = LocateRegistry.getRegistry();
+			System.out.println("Registry found"); //TODO
 			registry.rebind("sessionManager", stub);
+			System.out.println("sessionmanager stub bound to registry");//TODO
 		} catch (RemoteException e) {
 			System.err.println("SessionManager exception");
 			e.printStackTrace();

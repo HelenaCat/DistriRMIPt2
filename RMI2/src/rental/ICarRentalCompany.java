@@ -11,7 +11,7 @@ import client.ReservationConstraints;
 
 public interface ICarRentalCompany extends Remote{
 	
-	public String getName();
+	public String getName() throws RemoteException;
 
 	public boolean isAvailable(String carTypeName, Date start, Date end) throws RemoteException;
 	
