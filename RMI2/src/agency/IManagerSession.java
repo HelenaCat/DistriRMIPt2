@@ -7,6 +7,6 @@ import rental.ICarRentalCompany;
 
 public interface IManagerSession extends Remote {
 	
-	public void register(ICarRentalCompany stub) throws RemoteException;
+	public void registerCompany(ICarRentalCompany stub) throws RemoteException;
 
 }

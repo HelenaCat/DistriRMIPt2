@@ -25,12 +25,11 @@ public class RentalServer {
 
 		try {
 			CarRentalCompany company = new CarRentalCompany("Hertz", carsHertz);
-			String name = company.getName();
 			ICarRentalCompany stub =(ICarRentalCompany) UnicastRemoteObject.exportObject(company, 0);
 
 			Client client = new Client("trips");
 			IManagerSession session = client.getNewManagerSession("H", "Hertz");
-			session.register(stub);
+			session.registerCompany(stub);
 			
 			System.out.println("Hertz bound");
 		} catch (Exception e) {
@@ -42,13 +41,12 @@ public class RentalServer {
 
 		try {
 			CarRentalCompany company = new CarRentalCompany("Dockx", carsDockx);
-			String name = company.getName();
 			ICarRentalCompany stub =(ICarRentalCompany) UnicastRemoteObject.exportObject(company, 0);
 
 			
 			Client client = new Client("trips");
 			IManagerSession session = client.getNewManagerSession("F", "Dockx");
-			session.register(stub);
+			session.registerCompany(stub);
 			System.out.println("Dockx bound");
 		} catch (Exception e) {
 			System.err.println("Dockx exception:");

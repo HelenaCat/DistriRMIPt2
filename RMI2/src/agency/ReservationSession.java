@@ -9,12 +9,14 @@ import rental.Reservation;
 import rental.ReservationException;
 import client.ReservationConstraints;
 
-public class ReservationSession extends Session implements IReservationSession{
+public class ReservationSession implements IReservationSession{
 	
 	String name;
+	Agency agency;
 	
-	public ReservationSession(String name){
+	public ReservationSession(String name, Agency agency){
 		this.name = name;
+		this.agency = agency;
 	}
 
 	
