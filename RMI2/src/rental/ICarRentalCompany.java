@@ -6,8 +6,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import agency.ReservationConstraints;
 
-import client.ReservationConstraints;
+
+
 
 public interface ICarRentalCompany extends Remote{
 	
@@ -24,4 +26,10 @@ public interface ICarRentalCompany extends Remote{
 	public List<Reservation> getAllReservationsByClient(String client) throws RemoteException;
 	
 	public int getNumberOfReservationsForCarType(String carType) throws RemoteException;
+
+	public CarType getCheapestCarType(Date start, Date end) throws RemoteException;
+
+	public int getTotalNbReservations() throws RemoteException;
+	
+	public void cancelReservation(Reservation res) throws RemoteException;
 }

@@ -1,5 +1,6 @@
 package rental;
 
+import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,8 +12,10 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import agency.ReservationConstraints;
 
-import client.ReservationConstraints;
+
+
 
 public class CarRentalCompany implements ICarRentalCompany{
 
@@ -165,5 +168,25 @@ public class CarRentalCompany implements ICarRentalCompany{
 			}
 		}
 		return reservations.size();
+	}
+
+	@Override
+	public CarType getCheapestCarType(Date start, Date end) {
+		CarType cheapestCarType = null;
+		for(CarType carType: getAvailableCarTypes(start, end)){
+			if(cheapestCarType == null || carType.getRentalPricePerDay() < cheapestCarType.getRentalPricePerDay()){
+				cheapestCarType = carType;
+			}
+		}
+		return cheapestCarType;
+	}
+
+	@Override
+	public int getTotalNbReservations() throws RemoteException {
+		int nbReservations = 0;
+		for (Car car : cars) {
+			nbReservations += car.getReservations().size();
+		}
+		return nbReservations;
 	}
 }

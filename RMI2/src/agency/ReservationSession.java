@@ -1,5 +1,7 @@
 package agency;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,44 +9,55 @@ import rental.CarType;
 import rental.Quote;
 import rental.Reservation;
 import rental.ReservationException;
-import client.ReservationConstraints;
+
+//TODO moeten de methodes hier RemoteExceptions throwen??
+
 
 public class ReservationSession implements IReservationSession{
 	
 	String name;
 	Agency agency;
+	ArrayList<Quote> currentQuotes;
 	
 	public ReservationSession(String name, Agency agency){
 		this.name = name;
 		this.agency = agency;
 	}
 
-	
-	public Quote createQuote(ReservationConstraints constraints, String client)
-			throws ReservationException {
-		//TODO 
-		//-zet quote bij Company
-		//-vraag aan company om Quote aan te maken, Company geeft Quote terug
-		//-voeg Quote die teruggegeven wordt toe aan lijst die hier in de sessie bijgehouden wordt 
-		//-return de quote
-		//String carRenter, Date start, Date end, String rentalCompany, String carType, double rentalPrice
-		return null;
+	public String getCheapestCarType(Date start, Date end){
+		return agency.getCheapestCarType(start,end);
 	}
-	
-	public List<Quote> getCurrentQuotes(){
-		return null;
+
+
+	@Override
+	public ArrayList<String> checkForAvailableCarTypes(Date start, Date end) {
+		return agency.checkForAvailableCarTypes(start, end);
 	}
-	
-	public List<Reservation> confirmQuotes(){
-		return null;
+
+
+	@Override
+	public void addQuote(Date start, Date end, String carType, String carRentalName) throws ReservationException {
+		currentQuotes.add(agency.createQuote(start, end, carType, carRentalName, this.name));
 	}
-	
-	public List<CarType> getAvailableCarTypes(){
-		return null;
-	}
-	
-	public String getCheapestCarType(){
-		return null;
+
+	@Override
+	public List<Reservation> confirmQuotes() throws ReservationException {
+		ArrayList<Reservation> reservations = new ArrayList<>();
+		
+		for(Quote quote: currentQuotes){
+			try {
+				reservations.add(agency.confirmQuote(quote));
+			} catch (ReservationException r) {
+				for(Reservation reservation: reservations){
+					agency.cancelReservation(reservation);
+					currentQuotes.clear();
+					throw r;
+				}
+			}
+		}
+		
+		currentQuotes.clear();
+		return reservations;
 	}
 	
 }

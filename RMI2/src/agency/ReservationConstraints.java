@@ -1,4 +1,4 @@
-package client;
+package agency;
 
 import java.io.Serializable;
 import java.util.Date;

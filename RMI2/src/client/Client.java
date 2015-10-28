@@ -2,6 +2,7 @@ package client;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,15 +35,13 @@ public class Client extends AbstractTestManagement<IReservationSession, IManager
 
 	@Override
 	protected String getCheapestCarType(IReservationSession session, Date start, Date end) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return session.getCheapestCarType(start,end);
 	}
 
 	@Override
 	protected String getMostPopularCarRentalCompany(IManagerSession ms)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return ms.getMostPopularCarRentalCompany();
 	}
 
 	@Override
@@ -63,37 +62,38 @@ public class Client extends AbstractTestManagement<IReservationSession, IManager
 
 	@Override
 	protected void checkForAvailableCarTypes(IReservationSession session, Date start, Date end) throws Exception {
-		// TODO Auto-generated method stub
+		ArrayList<String> availableCarTypes = session.checkForAvailableCarTypes(start, end);
 		
+		String available = "Available CarTypes: ";
+		for(String type: availableCarTypes){
+			available += type + " ";
+		}
+		System.out.println(available);
 	}
 
 	@Override
 	protected void addQuoteToSession(IReservationSession session, String name,
 			Date start, Date end, String carType, String carRentalName)
 			throws Exception {
-		// TODO Auto-generated method stub
-		
+		session.addQuote(start, end, carType, carRentalName);
+		//TODO ReservationException wordt nu nergens (bij ons) gecatched, is dat de bedoeling?
+		//		--> wordt mss ergens in hun code gecatched, waardoor ze dan de boodschap die erin staat weergeven
 	}
 
 	@Override
-	protected List<Reservation> confirmQuotes(IReservationSession session,
-			String name) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	protected List<Reservation> confirmQuotes(IReservationSession session, String name) throws Exception {
+		// TODO Hier ook ReservationException doorthrowen, zodat hun code weet dat het is misgelopen en iets weergeeft ofzo?
+		return session.confirmQuotes();
 	}
 
 	@Override
-	protected int getNumberOfReservationsBy(IManagerSession ms,
-			String clientName) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	protected int getNumberOfReservationsBy(IManagerSession ms, String clientName) throws Exception {
+		return ms.getNbOfReservationsBy(clientName);
 	}
 
 	@Override
-	protected int getNumberOfReservationsForCarType(IManagerSession ms,
-			String carRentalName, String carType) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	protected int getNumberOfReservationsForCarType(IManagerSession ms, String carRentalName, String carType) throws Exception {
+		return ms.getNbOfReservationsForCarType(carType);
 	}
 
 
