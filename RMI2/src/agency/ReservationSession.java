@@ -1,16 +1,12 @@
 package agency;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import rental.CarType;
 import rental.Quote;
 import rental.Reservation;
 import rental.ReservationException;
-
-//TODO moeten de methodes hier RemoteExceptions throwen??
 
 
 public class ReservationSession implements IReservationSession{
@@ -22,6 +18,7 @@ public class ReservationSession implements IReservationSession{
 	public ReservationSession(String name, Agency agency){
 		this.name = name;
 		this.agency = agency;
+		this.currentQuotes = new ArrayList<Quote>();
 	}
 
 	public String getCheapestCarType(Date start, Date end){

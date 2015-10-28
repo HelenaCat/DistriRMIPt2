@@ -1,6 +1,5 @@
 package agency;
 
-import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -44,9 +43,6 @@ public class Agency {
 		System.out.println("Agency is ready");
 	}
 	
-	//TODO effe nadenken of het nodig is om hier telkens 
-	//		de exception die wordt gethrowed door de company op te zoeken
-	//			te catchen
 	
 	private ArrayList<String> companies;
 	private Registry registry;
@@ -89,7 +85,7 @@ public class Agency {
 				ICarRentalCompany company = (ICarRentalCompany) registry.lookup(companyString);
 				
 				int reservationCount = company.getTotalNbReservations();
-				if( reservationCount < nbReservations){
+				if( reservationCount > nbReservations){
 					nbReservations = reservationCount;
 					popularCompany = companyString;
 				}

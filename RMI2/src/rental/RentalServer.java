@@ -18,8 +18,6 @@ public class RentalServer {
 
 	public static void main(String[] args) throws ReservationException,
 	NumberFormatException, IOException {
-		//TODO Company-objecten aanmaken, 
-		//		en dan managersession aanmaken, stub meegeven en zo company registreren
 		
 		List<Car> carsHertz = loadData("hertz.csv");
 

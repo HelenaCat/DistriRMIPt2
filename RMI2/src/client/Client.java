@@ -6,23 +6,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import rental.ICarRentalCompany;
 import rental.Reservation;
 import agency.IManagerSession;
 import agency.IReservationSession;
 import agency.ISessionManager;
-import agency.ReservationSession;
-import agency.ManagerSession;
 
 public class Client extends AbstractTestManagement<IReservationSession, IManagerSession>{
 
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) throws Exception {
-				
-		Client client = new Client("trips");
-		client.run();
+	public static void main(String[] args) {
+		try {
+			Client client = new Client("trips");
+			client.run();
+		}
+		catch (Exception e) {}
 
 	}
 	
@@ -76,13 +75,10 @@ public class Client extends AbstractTestManagement<IReservationSession, IManager
 			Date start, Date end, String carType, String carRentalName)
 			throws Exception {
 		session.addQuote(start, end, carType, carRentalName);
-		//TODO ReservationException wordt nu nergens (bij ons) gecatched, is dat de bedoeling?
-		//		--> wordt mss ergens in hun code gecatched, waardoor ze dan de boodschap die erin staat weergeven
 	}
 
 	@Override
 	protected List<Reservation> confirmQuotes(IReservationSession session, String name) throws Exception {
-		// TODO Hier ook ReservationException doorthrowen, zodat hun code weet dat het is misgelopen en iets weergeeft ofzo?
 		return session.confirmQuotes();
 	}
 
