@@ -45,5 +45,40 @@ Annelies \textsc{Faes}\\[2cm]
 \vfill % Fill the rest of the page with whitespace
 
 \end{titlepage}
+\clearpage
+
+\section{Overview}
+
+\section{Design decisions}
+\subsection{Remotely accessible classes}
+
+
+\paragraph{Host: rental}
+\begin{itemize}
+\item \textbf{CarRentalCompany:} This class is remotely accessible through the ICarRentalCompany interface. It is the central point on the rental host of the company and contains most of the logic of that company that classes on other hosts need to be able to use. Multiple sessions need to be able to access the company simultaneously. They need to have information about the state in which other clients left the company (e.g. rented a car).
+\end{itemize}
+
+\paragraph{Host: agency}
+\begin{itemize}
+\item \textbf{SessionManager:} This class is remotely accessible through the ISessionManager interface. The session manager needs to be remotely accessible for all clients that want to use the application. The session manager will provide the clients with a session (a manager session or a reservation session) through which they get the functionality they need.
+\item \textbf{ManagerSession:} This class is remotely accessible through the IManagerSession interface. Through this class, managers get the functionality they need to manage their company. The manager session needs to be accessible by any client.
+\item \textbf{ReservationSession:} This class is remotely accessible through the IReservationSession interface. Through this class, renters get the functionality they need to rent a car. The reservation session needs to be accessible by any client.
+\end{itemize}
+
+The CarRentalCompany objects are located on the company server. They can all be located at a different server as stated in the assignment.\\
+The agency is located on another host because it is a central point where all companies can be managed and  it is able to control which functionality is accessible by clients by means of sessions.\\
+
+The CarRentalCompany and SessionManager objects are registered via the built-in RMI registry. The sessions themselves are not registered via the built-in RMI registry for life cycle management purposes. See subsection \ref{lifecycle}.
+%TODO which remote objects are registered via the built-in RMI registry (or not) and why?
+
+\subsection{Serializable classes}
+%TODO which classes are serializable and why?
+
+\subsection{Life cycle management of sessions}
+\label{lifecycle}
+
+\subsection{Synchronization}
+
+\section{Diagrams}
 
 \end{document}
