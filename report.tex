@@ -1,9 +1,13 @@
-\documentclass[10pt,a4paper]{report}
+\documentclass[10pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{pdfpages}
+
+
+
 \author{Helena Brekalo and Annelies Faes}
 
 
@@ -21,7 +25,7 @@
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=30mm]{logo_theo.png}
-\label{les2_01}
+\label{kulogo}
 \end{figure}
 
 \textsc{\Large Distributed Systems}\\[0.5cm] % Major heading such as course name
@@ -69,16 +73,63 @@ The CarRentalCompany objects are located on the company server. They can all be 
 The agency is located on another host because it is a central point where all companies can be managed and  it is able to control which functionality is accessible by clients by means of sessions.\\
 
 The CarRentalCompany and SessionManager objects are registered via the built-in RMI registry. The sessions themselves are not registered via the built-in RMI registry for life cycle management purposes. See subsection \ref{lifecycle}.
-%TODO which remote objects are registered via the built-in RMI registry (or not) and why?
 
 \subsection{Serializable classes}
 %TODO which classes are serializable and why?
 
+\paragraph{Host: rental}
+\begin{itemize}
+\item \textbf{Quote:} Quotes are created by the CarRentalCompany and all quotes from the same client are kept in the ReservationSession of that client. Because of that, the quote objects need to be sent over the wire.
+\item \textbf{Reservation:} Reservations are created at the company and are sent back over the wire to the client. 
+\end{itemize}
+
+\paragraph{Host: agency}
+\begin{itemize}
+\item \textbf{ReservationConstraints:} In order to create a quote (which is requested by the client), reservation constraints are needed, so the ReservationConstaints objects need to be sent from the agency to the client. %Waarom niet meer bij de client?
+\end{itemize}
+
 \subsection{Life cycle management of sessions}
 \label{lifecycle}
+Sessions are created by the session manager, their stub is returned to the client. The client keeps a reference as long as it's needed. When the client doesn't have a reference for the stub anymore, the garbage collector will automatically remove the unused sessions.
 
 \subsection{Synchronization}
 
+%TODO At which places is synchronization necessary to achieve thread-safety? Will those places become a bottleneck by applying synchronization?
+
+\paragraph{Host: agency}
+\begin{itemize}
+\item \textbf{Agency:} The methods getCheapestCarType and checkForAvailableCarTypes both contain a period in which the request needs to be checked. If at the time of checking confirmQuotes is executed, the results of the methods may be inconsistent with the actual values.\\ 
+The methods getNbOfReservationsBy, getNbOfReservationsForCarType and getMostPopularCarRentalCompany could return a wrong amount of reservations or the wrong most popular car rental company because a writing operation might be going on at the same time. In the case of reservations, the wrong totals might be returned if cancellations happen in confirmQuotes at or after the time of reading.
+\item \textbf{ReservationSession:} The method confirmQuotes needs to be synchronized because if one of the confirmations fails, a rollback is needed, so the reservations made up until that point need to be cancelled. No other method should be able to access the reservations before the confirmation is complete.
+\end{itemize}
+
 \section{Diagrams}
+
+\subsection{Full class diagram}
+\includepdf[pages={1}, landscape]{CarRentalApplicationClassDiagram.pdf} 
+\clearpage
+
+\subsection{Deployment diagram}
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=160mm]{DeploymentDiagram.png}
+\label{deploymentdiagram}
+\end{figure}
+
+\clearpage
+
+\subsection{Sequence diagrams}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=160mm]{registerCompany.png}
+\caption{Create and register a company.} 
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=160mm]{confirmQuotes.png}
+\caption{Confirm all quotes in a session.} 
+\end{figure}
 
 \end{document}
