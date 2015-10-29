@@ -76,7 +76,7 @@ public class Agency {
 		return cheapestCarType.getName();
 	}
 
-	public String getMostPopularCarRentalCompany() {
+	public synchronized String getMostPopularCarRentalCompany() {
 		String popularCompany = "";
 		int nbReservations = 0;
 		
