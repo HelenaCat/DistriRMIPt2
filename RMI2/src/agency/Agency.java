@@ -56,7 +56,7 @@ public class Agency {
 		this.companies.add(companyName);
 	}
 
-	public String getCheapestCarType(Date start, Date end) {
+	public synchronized String getCheapestCarType(Date start, Date end) {
 		CarType cheapestCarType = null;
 		for(String companyString : companies){
 			try {
@@ -98,7 +98,7 @@ public class Agency {
 		return popularCompany;
 	}
 
-	public ArrayList<String> checkForAvailableCarTypes(Date start, Date end) {
+	public synchronized ArrayList<String> checkForAvailableCarTypes(Date start, Date end) {
 		ArrayList<String> availableCarTypes = new ArrayList<>();
 		for(String companyString : companies){
 			try {
@@ -151,7 +151,7 @@ public class Agency {
 		}		
 	}
 
-	public int getNbOfReservationsBy(String clientName) {
+	public synchronized int getNbOfReservationsBy(String clientName) {
 		int nbReservations = 0;
 		for(String companyString : companies){
 			try {
@@ -166,7 +166,7 @@ public class Agency {
 		return nbReservations;
 	}
 
-	public int getNbOfReservationsForCarType(String carType) {
+	public synchronized int getNbOfReservationsForCarType(String carType) {
 		int nbReservations = 0;
 		for(String companyString : companies){
 			try {

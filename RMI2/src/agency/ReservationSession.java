@@ -38,7 +38,7 @@ public class ReservationSession implements IReservationSession{
 	}
 
 	@Override
-	public List<Reservation> confirmQuotes() throws ReservationException {
+	public synchronized List<Reservation> confirmQuotes() throws ReservationException {
 		ArrayList<Reservation> reservations = new ArrayList<>();
 		
 		for(Quote quote: currentQuotes){
