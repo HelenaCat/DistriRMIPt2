@@ -52,6 +52,10 @@ Annelies \textsc{Faes}\\[2cm]
 \clearpage
 
 \section{Overview}
+The application consists of three parts: the rental part where the companies are located, the agency and the client. 
+As stated in the assignment, each company can run on its own server. Located on these servers are all classes related to the company. The second part consists of the agency, all session-related classes and the RMI registry. The third part consists of the client.\\
+The RMI registry manages the stubs of the companies and the session manager. To use the application, a session has to be requested. The client requests either a reservation session or a manager session from the session manager through the stub of the session manager, which it acquired through the RMI registry. The session manager returns a stub of the requested session. All communication happens through these sessions via their stubs. 
+
 
 \section{Design decisions}
 \subsection{Remotely accessible classes}
